@@ -12,4 +12,6 @@ jobs:
         with:
           node-version: '22'
       - name: Validate JavaScript and DOM IDs
-        run: node tests/smoke.cjs
+        run: |
+          node tests/smoke.cjs
+          node --check cloudflare/src/index.js
