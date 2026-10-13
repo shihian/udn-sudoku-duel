@@ -5,12 +5,15 @@ function renderRoom(){
  show('roomPanel',true);
  $('roomId').textContent=roomId.slice(-6).toUpperCase();
  $('inviteUrl').value=location.origin+location.pathname+'?room='+encodeURIComponent(roomId);
+ const myself=room.players.find(p=>p.id===me);
+ $('myIdentity').textContent=myself?'你是：'+myself.name+(isHost?'（房主）':'（玩家）'):'正在確認你的玩家身分…';
+ $('winnerInfo').textContent=room.status==='finished'&&room.winnerUid?'🏆 本局冠軍：'+(room.players.find(p=>p.id===room.winnerUid)?.name||'玩家')+(room.winnerUid===me?'（你）':''):'';
  $('roster').innerHTML='';
  for(const p of room.players){
   const d=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('small');
-  name.textContent=p.name+(p.id===room.host?' 👑':'');
+  name.textContent=p.name+(p.id===me?'（我）':'')+(p.id===room.host?' · 房主':'')+(p.id===room.winnerUid?' 🏆 本局冠軍':'');
   detail.textContent=p.finished?'🏁 '+fmt(p.time):room.status==='waiting'?(p.ready?'✓ 已準備':'等待準備'):'進度 '+(p.filled||0)+'/'+(room.challenge?.puzzle?.length||81);
-  d.className='person';d.append(name,detail);$('roster').appendChild(d);
+  d.className='person'+(p.id===me?' person-me':'');d.append(name,detail);$('roster').appendChild(d);
  }
  $('roomNote').textContent=room.status==='waiting'?(room.players.length<2?'等待朋友加入（至少需要 2 人）':room.players.every(p=>p.ready)?'全員準備完成！房主可以開始倒數。':'等待所有玩家準備'):room.status==='countdown'?'5 秒倒數中':room.status==='playing'?'正在競速，最先完成者獲勝。':'本局已結束';
  show('ready',room.status==='waiting');
