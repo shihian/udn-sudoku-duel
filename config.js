@@ -1,0 +1,1 @@
+// 請填 Supabase Project URL 與公開 publishable / anon key。禁止填 service_role。\nwindow.DUEL_CONFIG = { url: '', anonKey: '' };\n
