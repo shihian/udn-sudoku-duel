@@ -19,3 +19,10 @@
 .game-level select{width:min(100%,160px);border:1px solid #dbe1e7;border-radius:9px;background:#fff;color:#27364b;padding:8px 10px;font-size:14px;font-weight:600}
 .game-level strong{white-space:nowrap}
 @media(max-width:650px){.gamehead{grid-template-columns:1fr 1.3fr 1fr;gap:8px}.game-level{grid-column:2;grid-row:1}.gamehead #clock{grid-column:3;grid-row:1;text-align:right}.gamehead #filled{grid-column:1;grid-row:2}.gamehead #answerToggle{grid-column:2 / 4;grid-row:2;justify-self:end}}
+
+/* Multiplayer: distinguish my identity, room owner and winner. */
+.my-identity{padding:12px 14px;background:#fff0e6;border:1px solid #efc3a7;border-radius:10px;color:#874a2c;font-weight:800}
+.winner-info:not(:empty){padding:10px 14px;border-radius:10px;background:#fff6d9;color:#78520e;font-weight:800}
+.winner-info:empty{display:none}
+.person.person-me{background:#fff0e6;outline:2px solid #e3a17c;outline-offset:-2px}
+.person strong{min-width:0;overflow-wrap:anywhere}
