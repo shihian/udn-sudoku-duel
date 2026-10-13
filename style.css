@@ -26,3 +26,13 @@
 .winner-info:empty{display:none}
 .person.person-me{background:#fff0e6;outline:2px solid #e3a17c;outline-offset:-2px}
 .person strong{min-width:0;overflow-wrap:anywhere}
+
+/* Shared pre-match countdown: blocks input until GO on every device. */
+.countdown-overlay{position:fixed;inset:0;z-index:100;background:rgba(27,37,56,.82);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:20px;pointer-events:auto}
+.countdown-overlay.hidden{display:none!important}
+.countdown-content p{font-size:clamp(13px,3vw,19px);letter-spacing:.16em;color:#f2c4a7}
+.countdown-content strong{font-size:clamp(20px,4vw,30px)}
+.countdown-number{font-size:clamp(120px,34vw,260px);font-weight:900;line-height:1.25;color:#fff;text-shadow:0 12px 40px rgba(0,0,0,.2);font-variant-numeric:tabular-nums}
+.countdown-pop{animation:countdownPop .55s cubic-bezier(.18,.7,.2,1) both}
+@keyframes countdownPop{from{transform:scale(1.4);opacity:.2}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.countdown-pop{animation:none}}
