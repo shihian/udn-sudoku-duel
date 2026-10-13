@@ -21,13 +21,14 @@
         },
         "members": {
           "$uid": {
-            ".write": "auth != null && auth.uid === $uid && root.child('rooms/'+$roomId).exists() && !data.exists() && newData.parent().childrenCount <= 8",
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms/'+$roomId).exists() && newData.parent().childrenCount <= 8 && (!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('finished').val() === data.child('finished').val() && newData.child('time').val() === data.child('time').val() && (!data.child('ready').val() || newData.child('ready').val()) && newData.child('filled').val() >= data.child('filled').val()))",
             ".validate": "newData.hasChildren(['name','ready','filled','finished','time'])",
             "name": {".validate": "newData.isString() && newData.val().length <= 24"},
             "ready": {".validate": "newData.isBoolean()"},
             "filled": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 81"},
             "finished": {".validate": "newData.isBoolean()"},
-            "time": {".validate": "newData.isNumber() && newData.val() >= 0"}
+            "time": {".validate": "newData.isNumber() && newData.val() >= 0"},
+            "submission": {".validate": "newData.childrenCount === 9 || newData.childrenCount === 81"}
           }
         }
       }
