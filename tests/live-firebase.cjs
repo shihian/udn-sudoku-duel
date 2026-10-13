@@ -10,6 +10,10 @@ const url='https://shihian.github.io/udn-sudoku-duel/';
   page.on('pageerror',e=>errors.push(name+': '+e.message));
  }
  try{
+  const skewContext=await browser.newContext();
+  await skewContext.addInitScript(()=>{const realNow=Date.now.bind(Date);Date.now=()=>realNow()+48*60*60*1000});
+  const skewPage=await skewContext.newPage();
+  try{await skewPage.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await skewPage.locator('#duelTab').click();await skewPage.locator('#host').click();await skewPage.locator('#roomPanel').waitFor({state:'visible',timeout:30000});console.log('PASS: create room with client clock 48h ahead')}finally{await skewContext.close()}
   await host.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
   await host.locator('#duelTab').click();
   await host.locator('#boardSize').selectOption('3');
