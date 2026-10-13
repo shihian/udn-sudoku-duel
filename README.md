@@ -1,1 +1,9 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+# 數獨小宇宙 v4 — 經典＋算數變形、單人＋多人
+
+部署：GitHub Pages `main` / `(root)`，不需要 Supabase 或資料庫。
+
+玩法：9×9 經典數獨與算數變形（Killer Sudoku 混合版：保留部分已知數字，虛線區塊內加總符合角落目標且數字不重複）；單人可無限開局，四種難度；多人由房主建立邀請網址，最多八人，所有人準備後倒數五秒，同題競速，正確完成最後一格自動跳出結果。
+
+多人使用 PeerJS + WebRTC 和第三方公開訊號服務，房主須保持頁面開啟，企業網路或防火牆可能限制連線。題目答案會提供客戶端，僅供好友休閒試玩，不適合獎金或獎品競賽。難度依提示數量粗分，並非依解題技法評級。算數變形是在唯一解的經典題上加入加總限制，不是完全無已知數字的純 Killer Sudoku。
+
+請使用兩個不同瀏覽器或裝置測試多人邀請、準備、倒數、完成與再戰。正式瀏覽器端對戰驗收尚未完成。
