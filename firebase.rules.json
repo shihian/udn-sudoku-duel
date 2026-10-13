@@ -21,7 +21,7 @@
         },
         "members": {
           "$uid": {
-            ".write": "auth != null && auth.uid === $uid && root.child('rooms/'+$roomId).exists() && (!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('finished').val() === data.child('finished').val() && newData.child('time').val() === data.child('time').val() && (!data.child('ready').val() || newData.child('ready').val())))",
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms/'+$roomId).exists() && (!data.exists() || (newData.child('name').val() === data.child('name').val() && newData.child('finished').val() === data.child('finished').val() && newData.child('time').val() === data.child('time').val() && (data.child('ready').val() === false || newData.child('ready').val() === true)))",
             ".validate": "newData.hasChildren(['name','ready','filled','finished','time'])",
             "name": {".validate": "newData.isString() && newData.val().length <= 24"},
             "ready": {".validate": "newData.isBoolean()"},
