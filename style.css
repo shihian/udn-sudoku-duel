@@ -7,3 +7,8 @@
 .cell .answer-preview{color:#bfc5cc!important;font-weight:400;opacity:1;pointer-events:none;user-select:none}
 .cell.selected .answer-preview{color:#adb5bf!important}
 #answerToggle{font-size:12px;padding:6px 10px;border-color:#d8dce1;color:#657284;background:#f5f7fa}
+
+/* Fast 3×3 end-to-end QA board */
+.board.quick-board{width:min(100%,360px);grid-template-columns:repeat(3,1fr);aspect-ratio:1}
+.board.quick-board .cell{font-size:clamp(26px,5vw,46px)}
+.board.quick-board .cell .answer-preview{font-size:inherit}
