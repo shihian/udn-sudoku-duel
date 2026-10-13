@@ -32,6 +32,7 @@ export async function joinRoom(id){
 export function watchRoom(id,cb,error){return onValue(ref(db,'rooms/'+id),s=>cb(s.val()),error)}
 export async function ready(id,uid){await update(ref(db,'rooms/'+id+'/members/'+uid),{ready:true})}
 export async function progress(id,uid,filled){await update(ref(db,'rooms/'+id+'/members/'+uid),{filled})}
+export async function submit(id,uid,board){await update(ref(db,'rooms/'+id+'/members/'+uid),{submission:board,filled:board.length})}
 export async function startRoom(id,challenge,startAt){
  await update(ref(db,'rooms/'+id),{challenge,startAt,status:'countdown',winnerUid:'',updatedAt:Date.now()})
 }
