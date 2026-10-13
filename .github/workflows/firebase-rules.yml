@@ -2,6 +2,7 @@ name: Firebase database rules acceptance
 on:
   push:
     paths:
+      - firebase-emulator.json
       - firebase.rules.json
       - firebase-room.js
       - tests/firebase-rules.cjs
