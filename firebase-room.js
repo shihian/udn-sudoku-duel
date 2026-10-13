@@ -1,6 +1,6 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
-import {getAuth,signInAnonymously,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
-import {getDatabase,ref,get,set,update,onValue,runTransaction,onDisconnect,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js';
+import {getAuth,signInAnonymously} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+import {getDatabase,ref,get,set,update,onValue,runTransaction} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js';
 import {firebaseConfig} from './firebase-config.js';
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);
 let login=null;
@@ -21,6 +21,7 @@ export async function joinRoom(id){
  const uid=await identity(),r=ref(db,'rooms/'+id),snap=await get(r);
  if(!snap.exists())throw Error('找不到房間，可能已過期或已關閉');
  const data=snap.val();
+ if(Object.keys(data.members||{}).length>=8&&!data.members?.[uid])throw Error('房間已滿（最多 8 人）');
  if(!['waiting','countdown','playing','finished'].includes(data.status))throw Error('房間狀態無效');
  const memberRef=ref(db,'rooms/'+id+'/members/'+uid);
  if(!data.members?.[uid]){
@@ -37,9 +38,9 @@ export async function startRoom(id,challenge,startAt){
  await update(ref(db,'rooms/'+id),{challenge,startAt,status:'countdown',winnerUid:'',updatedAt:Date.now()})
 }
 export async function playing(id){await update(ref(db,'rooms/'+id),{status:'playing',updatedAt:Date.now()})}
-export async function finishRoom(id,uid,seconds){await update(ref(db,'rooms/'+id),{winnerUid:uid,status:'finished',updatedAt:Date.now(),['members/'+uid+'/finished']:true,['members/'+uid+'/time']:seconds})}
+export async function finishRoom(id,uid,seconds){const result=await runTransaction(ref(db,'rooms/'+id),room=>{if(!room||room.winnerUid||room.status==='finished')return;room.winnerUid=uid;room.status='finished';room.updatedAt=Date.now();if(room.members?.[uid]){room.members[uid].finished=true;room.members[uid].time=seconds}return room},{applyLocally:false});return result.committed}
 export async function resetRoom(id,members){
  const changes={status:'waiting',startAt:0,challenge:null,winnerUid:'',updatedAt:Date.now()};
- for(const uid of Object.keys(members)){changes['members/'+uid+'/ready']=false;changes['members/'+uid+'/filled']=0;changes['members/'+uid+'/finished']=false;changes['members/'+uid+'/time']=0}
+ for(const uid of Object.keys(members)){changes['members/'+uid+'/ready']=false;changes['members/'+uid+'/filled']=0;changes['members/'+uid+'/finished']=false;changes['members/'+uid+'/time']=0;changes['members/'+uid+'/submission']=null}
  await update(ref(db,'rooms/'+id),changes);
 }
