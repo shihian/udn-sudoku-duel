@@ -22,7 +22,7 @@ function renderRoom(){
 function onRoom(data){
  if(!data){say('房間已不存在或已關閉');leave();return}
  const oldStatus=room?.status;
- room={host:data.hostUid,status:data.status,startAt:data.startAt||0,challenge:data.challenge||null,answer:data.challenge?.answer||null,players:Object.entries(data.members||{}).map(([id,p])=>({...p,id})),winnerUid:data.winnerUid,finishers:data.winnerUid?[{id:data.winnerUid,name:data.members?.[data.winnerUid]?.name,time:data.members?.[data.winnerUid]?.time}]:[]};
+ room={host:data.hostUid,status:data.status,startAt:data.startAt||0,challenge:data.challenge||null,answer:data.challenge?.answer||null,players:Object.entries(data.members||{}).map(([id,p])=>({...p,id})),winnerUid:data.winnerUid,finishers:data.winnerUid?[{id:data.winnerUid,name:data.members?.[data.winnerUid]?.name,time:Math.max(0,Math.floor(((data.updatedAt||Date.now())-(data.startAt||Date.now()))/1000))}]:[]};
  isHost=me===room.host;
  show('lobby',false);
  if(room.challenge&&['countdown','playing','finished'].includes(room.status)&&(!game||game.startAt!==room.startAt||game.answer.length!==room.challenge.answer.length)){
