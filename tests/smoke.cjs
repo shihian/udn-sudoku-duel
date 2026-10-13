@@ -4,3 +4,7 @@ assert(js.includes("room.status==='countdown'||room.status==='playing'"),'late j
 assert(!js.includes("room.status!=='waiting'||room.players.length>=8"),'old two-player/started-room join rejection remains');
 assert(js.includes("room.challenge=p"),'host must retain puzzle for late joiners');
 console.log('PASS: late-join implementation checks');
+
+assert(js.includes("$('hintBtn').disabled=false"),'multiplayer hint must be enabled');
+assert(!js.includes("mode!=='solo'||!allowed()"),'hint must not reject multiplayer');
+console.log('PASS: multiplayer hint enabled');
