@@ -38,7 +38,7 @@ export async function startRoom(id,challenge,startAt){
  await update(ref(db,'rooms/'+id),{challenge,startAt,status:'countdown',winnerUid:'',updatedAt:Date.now()})
 }
 export async function playing(id){await update(ref(db,'rooms/'+id),{status:'playing',updatedAt:Date.now()})}
-export async function finishRoom(id,uid,seconds){const result=await runTransaction(ref(db,'rooms/'+id),room=>{if(!room||room.winnerUid||room.status==='finished')return;room.winnerUid=uid;room.status='finished';room.updatedAt=Date.now();if(room.members?.[uid]){room.members[uid].finished=true;room.members[uid].time=seconds}return room},{applyLocally:false});return result.committed}
+export async function finishRoom(id,uid,seconds){const result=await runTransaction(ref(db,'rooms/'+id),room=>{if(!room||room.winnerUid||room.status==='finished')return;room.winnerUid=uid;room.status='finished';room.updatedAt=Date.now();return room},{applyLocally:false});return result.committed}
 export async function resetRoom(id,members){
  const changes={status:'waiting',startAt:0,challenge:null,winnerUid:'',updatedAt:Date.now()};
  for(const uid of Object.keys(members)){changes['members/'+uid+'/ready']=false;changes['members/'+uid+'/filled']=0;changes['members/'+uid+'/finished']=false;changes['members/'+uid+'/time']=0;changes['members/'+uid+'/submission']=null}
