@@ -12,3 +12,10 @@
 .board.quick-board{width:min(100%,360px);grid-template-columns:repeat(3,1fr);aspect-ratio:1}
 .board.quick-board .cell{font-size:clamp(26px,5vw,46px)}
 .board.quick-board .cell .answer-preview{font-size:inherit}
+
+/* Place level selection at the center of the board header, for both 3x3 and 9x9. */
+.gamehead{display:grid;grid-template-columns:minmax(70px,1fr) minmax(120px,1fr) minmax(60px,1fr) minmax(65px,1fr) auto;gap:10px;align-items:center}
+.game-level{display:flex;justify-content:center;align-items:center;min-width:0}
+.game-level select{width:min(100%,160px);border:1px solid #dbe1e7;border-radius:9px;background:#fff;color:#27364b;padding:8px 10px;font-size:14px;font-weight:600}
+.game-level strong{white-space:nowrap}
+@media(max-width:650px){.gamehead{grid-template-columns:1fr 1.3fr 1fr;gap:8px}.game-level{grid-column:2;grid-row:1}.gamehead #clock{grid-column:3;grid-row:1;text-align:right}.gamehead #filled{grid-column:1;grid-row:2}.gamehead #answerToggle{grid-column:2 / 4;grid-row:2;justify-self:end}}
