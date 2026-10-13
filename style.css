@@ -2,3 +2,8 @@
 /* QA answer preview: visual only, never counted as player input. */
 .cell .answer-preview{color:#d8dce1;font-weight:400;pointer-events:none;user-select:none}
 .cell.selected .answer-preview{color:#b7bec7}
+
+/* Visible but unobtrusive solution guide for end-to-end QA */
+.cell .answer-preview{color:#bfc5cc!important;font-weight:400;opacity:1;pointer-events:none;user-select:none}
+.cell.selected .answer-preview{color:#adb5bf!important}
+#answerToggle{font-size:12px;padding:6px 10px;border-color:#d8dce1;color:#657284;background:#f5f7fa}
