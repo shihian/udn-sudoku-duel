@@ -16,7 +16,7 @@ function renderRoom(){
   d.className='person'+(p.id===me?' person-me':'');d.append(name,detail);$('roster').appendChild(d);
  }
  $('roomNote').textContent=room.status==='waiting'?(room.players.length<2?'等待朋友加入（至少需要 2 人）':room.players.every(p=>p.ready)?'全員準備完成！房主可以開始倒數。':'等待所有玩家準備'):room.status==='countdown'?'5 秒倒數中':room.status==='playing'?'正在競速，最先完成者獲勝。':'本局已結束';
- show('ready',room.status==='waiting');
+ show('ready',room.status==='waiting'&&!room.players.find(p=>p.id===me)?.ready);
  $('ready').disabled=!!room.players.find(p=>p.id===me)?.ready;
  show('start',isHost&&room.status==='waiting');
  $('start').disabled=room.players.length<2||!room.players.every(p=>p.ready);
@@ -31,7 +31,7 @@ function onRoom(data){
  if(room.challenge&&['countdown','playing','finished'].includes(room.status)&&(!game||game.startAt!==room.startAt||game.answer.length!==room.challenge.answer.length)){
   newGame(room.challenge,0,room.startAt);
  }
- if(room.status==='waiting'&&oldStatus&&oldStatus!=='waiting'){game=null;shown=false;show('game',false)}
+ if(room.status==='waiting'&&oldStatus&&oldStatus!=='waiting'){game=null;shown=false;show('game',false);say('等待所有玩家準備。')}
  if(room.status==='finished'&&!shown){
   shown=true;
   const w=room.finishers[0];
@@ -45,6 +45,7 @@ function progress(){
  FB.progress(roomId,me,game.board.filter(Boolean).length).catch(e=>say('同步進度失敗：'+e.message));
 }
 function leave(){
+ say('');
  if(unsubscribe){unsubscribe();unsubscribe=null}
  roomId='';room=null;isHost=false;game=null;
  show('lobby',true);show('roomPanel',false);show('game',false);
