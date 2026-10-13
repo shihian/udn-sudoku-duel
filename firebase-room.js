@@ -5,7 +5,7 @@ import {firebaseConfig} from './firebase-config.js';
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getDatabase(app);
 let login=null;
 export async function identity(){
- if(!login)login=signInAnonymously(auth).then(x=>x.user.uid).catch(e=>{login=null;throw e});
+ if(!login)login=auth.authStateReady().then(()=>auth.currentUser?.uid||signInAnonymously(auth).then(x=>x.user.uid)).catch(e=>{login=null;throw e});
  return login;
 }
 export function randomRoom(){return Array.from(crypto.getRandomValues(new Uint8Array(18)),x=>x.toString(16).padStart(2,'0')).join('')}
